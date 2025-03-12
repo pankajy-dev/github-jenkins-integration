@@ -8,7 +8,7 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
-                    echo "To successfully run this stage, setup shared library in Jenkins - https://github.com/pankajy-dev/shared-library"
+                    echo "To successfully run this stage, setup shared library in jenkins --> system--> shared libraries - https://github.com/pankajy-dev/shared-library"
                     def helper = new com.pankaj.Helper(this)  // Create helper instance
                     helper.printMessage("Pipeline Started ✅")
 
@@ -20,12 +20,6 @@ pipeline {
                     def output = helper.runShellCommand("echo Hello Jenkins")
                     helper.printMessage("Shell Output: ${output}")
                 }
-            }
-        }
-
-        stage('reusableStep') {
-            steps {
-                reusableStep(stageName: 'Build', command: 'echo "Running Build Stage 🚀"', notify: true)
             }
         }
 
