@@ -10,7 +10,6 @@ pipeline {
         stage('Create and Archive File') {
             steps {
                 sh 'echo "This is a sample output" > sample.txt'
-                archiveArtifacts artifacts: 'sample.txt'
             }
         }
     }
