@@ -39,10 +39,30 @@ pipeline {
                 }
             }
         }
-        stage('Stage-3') {
-            steps {
-                withMockLoad(averageDuration: 5, testFailureIgnore: false) {
-                    sh MOCK_LOAD_COMMAND
+        stage('Parallel-Block') {
+            parallel {
+                stage('Stage-3 - Parallel') {
+                    steps {
+                        withMockLoad(averageDuration: 5, testFailureIgnore: false) {
+                            sh MOCK_LOAD_COMMAND
+                        }
+                    }
+                }
+                stage('Stage 4 - Test - Parallel') {
+                    parallel {
+                        stage('Unit Tests - Parallel Step') {
+                            steps {
+                                sh "echo 'Running unit tests...'"
+                                // Add your unit test commands here
+                            }
+                        }
+                        stage('Integration Tests - Parallel Step') {
+                            steps {
+                                sh "echo 'Running integration tests...'"
+                                // Add your integration test commands here
+                            }
+                        }
+                    }
                 }
             }
         }
