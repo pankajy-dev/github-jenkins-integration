@@ -39,7 +39,7 @@ pipeline {
                 }
             }
         }
-        stage('Stage - 2Parallel-Block') {
+        stage('Stage - 2- Parallel-Block') {
             parallel {
                 stage('Stage-2.1 - Parallel Stage ') {
                     steps {
@@ -49,19 +49,9 @@ pipeline {
                     }
                 }
                 stage('Stage 2.2 - Test - Parallel stage') {
-                    parallel {
-                        stage('Step 2.2.1 - Unit Tests - Parallel Step') {
                             steps {
                                 sh "echo 'Running unit tests...'"
                                 // Add your unit test commands here
-                            }
-                        }
-                        stage('Step 2.2.2 - Integration Tests - Parallel Step') {
-                            steps {
-                                sh "echo 'Running integration tests...'"
-                                // Add your integration test commands here
-                            }
-                        }
                     }
                 }
             }
