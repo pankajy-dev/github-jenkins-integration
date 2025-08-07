@@ -1,59 +1,26 @@
 pipeline {
     agent any
+
     stages {
-        stage('Stage-0') {
+        stage('Build') {
             steps {
-                withMockLoad(averageDuration: 3, testFailureIgnore: false) {
-                    sh MOCK_LOAD_COMMAND
-                }
+                echo 'Starting build stage...'
+                sh 'mvn clean compile'
+                echo 'Build stage completed.'
             }
         }
-        stage('Stage-1') {
-            parallel {
-                stage('Stage-1.1') {
-                    steps {
-                        sh "echo 'first step'"
-                        withMockLoad(averageDuration: 3, testFailureIgnore: false) {
-                            sh MOCK_LOAD_COMMAND
-                        }
-                        sh "echo 'Execution completed!!!!!!!!!'"
-                    }
-                }
-                stage('Stage-1.2') {
-                    stages {
-                        stage('1.2.1') {
-                            steps {
-                                withMockLoad(averageDuration: 9, testFailureIgnore: false) {
-                                    sh MOCK_LOAD_COMMAND
-                                }
-                            }
-                        }
-                        stage('1.2.2') {
-                            steps {
-                                withMockLoad(averageDuration: 9, testFailureIgnore: false) {
-                                    sh MOCK_LOAD_COMMAND
-                                }
-                            }
-                        }
-                    }
-                }
+        stage('Test') {
+            steps {
+                echo 'Starting test stage...'
+                sh 'mvn test'
+                echo 'Test stage completed.'
             }
         }
-        stage('Stage - 2- Parallel-Block') {
-            parallel {
-                stage('Stage-2.1 - Parallel Stage ') {
-                    steps {
-                        withMockLoad(averageDuration: 5, testFailureIgnore: false) {
-                            sh MOCK_LOAD_COMMAND
-                        }
-                    }
-                }
-                stage('Stage 2.2 - Test - Parallel stage') {
-                            steps {
-                                sh "echo 'Running unit tests...'"
-                                // Add your unit test commands here
-                    }
-                }
+        stage('Archive Test Results') {
+            steps {
+                echo 'Archiving test results...'
+                junit '**/target/surefire-reports/*.xml'
+                echo 'Test results archived.'
             }
         }
     }
