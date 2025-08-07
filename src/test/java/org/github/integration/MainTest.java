@@ -1,13 +1,13 @@
 package org.github.integration;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-class MainTest {
+public class MainTest {
 
     @Test
-    void greet() {
+    public void greet() {
         assertEquals("Namaste from github-jenkins-integration", Main.greet());
     }
 }
