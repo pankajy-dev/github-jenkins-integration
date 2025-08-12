@@ -9,13 +9,28 @@ pipeline {
                 echo 'Build stage completed.'
             }
         }
-        stage('Test') {
+
+        stage('Realtime Test') {
             steps {
                 echo 'Starting test stage...'
-                sh 'mvn test'
+                // Run tests with realtimeJUnit monitoring the output
+                script {
+                    realtimeJUnit('**/target/surefire-reports/TEST-*.xml') {
+                        sh 'mvn -Dmaven.test.failure.ignore=true clean verify'
+                    }
+                }
                 echo 'Test stage completed.'
             }
         }
+
+//        stage('Test') {
+//            steps {
+//                echo 'Starting test stage...'
+//                sh 'mvn test'
+//                echo 'Test stage completed.'
+//            }
+//        }
+
         stage("Registering") {
             steps {
                 echo 'Next step will register the metadata'
